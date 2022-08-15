@@ -1,0 +1,58 @@
+Echipa ProChess
+
+Voinea Miruna Georgiana - 323 CB
+Popa-Mihai Patricia - 323 CB
+
+	Pentru a usura procesul de compilare si rulare, am creat un Makefile.
+
+	Modalitatea de implementare aleasa are la baza reprezentarea numerelor pe
+biti. Tabla de sah este vazuta ca un numar pe 64 de biti, unde 1 reprezinta un
+camp ocupat, iar 0 reprezinta un camp liber. Fiecare jucator are o astfel de
+tabla de joc, o culoare si un vector de piese. De asemenea, fiecare piesa are
+asociata o pozitie reprezentata pe biti si un atribut care spune daca piesa a
+fost capturata sau nu.
+	Principalul motiv pentru care am ales aceasta metoda consta in simplitatea
+cu care putem verifica daca o caseta de pe tabla de joc este libera sau nu
+(prin operatia and), precum si usurinta de a schimba pozitia pieselor(prin
+shiftari pe biti).
+	Pentru prima etapa a proiectului, am ales sa mutam un pion. In momentul
+in care nu mai poate inainta, da resign.
+	Principalele 3 metode sunt modifyBoard, tryMoves si eliminatePiece.
+	ModifyBoard este folosita pentru a actualiza tabla de joc a adversarului,
+conform comenzii date de acesta, dar si atunci cand modul force este activat.
+Daca rezultatul operatiei and aplicate asupra celor 2 table de joc este diferit
+de 0, inseamna ca o piesa trebuie capturata.
+	EliminatePiece cauta piesa aflata pe pozitia cucerita de adversar si
+seteaza campul killed.
+	TryMoves verifica mai intai daca pionul care se doreste a fi mutat este
+capturat si daca acesta se afla pe prima sau ultima linie. In caz afirmativ,
+se afiseaza "resign". Se incearca mutarea pe caseta din fata, iar in cazul in
+care aceasta este ocupata, se incearca atacul pe diagonala, mai intai pe partea
+stanga, iar apoi pe cea dreapta. Pentru a face o mutare, se verifica daca pe
+caseta respectiva se afla deja o piesa si daca piesa nu se afla pe marginea
+tablei.
+	In cazul in care xboard da comenzile new, white si black, se apeleaza
+constructorii, respectiv se face swap intre cei doi jucatori astfel incat
+acestia sa aiba culorile dorite.
+	In cazul in care este primita comanda force, metoda folosita este
+modifyBoard, deoarece aceasta doar modifica tabla si apeleaza eliminatePiece
+atunci cand este necesar.
+	Pentru go, se face swap intre jucatori daca este cazul, iar engine-ul
+apeleaza tryMoves pentru a face urmatoarea mutare.
+	Daca se primeste o mutare fara a fi in modul force, tabla adversarului
+este modificata, se incearca o mutare, actualizandu-se si tabla engine-ului,
+iar daca este necesar, o piesa este capturata prin metoda eliminatePiece.
+
+Surse de inspiratie:
+https://en.wikipedia.org/wiki/Bitboard
+https://www.chessprogramming.org/Square_Mapping_Considerations
+
+Responsabilitati:
+Voinea Miruna Georgiana
+- capitan
+- initializarea tablelor de joc
+- mutarea pionului
+
+Popa-Mihai Patricia:
+- tratarea comenzilor xboard, new, force, go, white, black, quit, resign, move
+- documentatie + surse de inspiratie
